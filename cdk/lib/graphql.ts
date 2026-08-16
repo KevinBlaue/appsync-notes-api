@@ -88,6 +88,8 @@ export class GraphqlStack extends BaseStack {
       name: Stack.of(this).stackName,
       definition: Definition.fromFile(join(__dirname, '..', '..', 'contract', 'schema.graphql')),
       authorizationConfig: {
+        // Deliberate simplification for this isolated, non-production working probe. An API key
+        // provides basic access control, but no user identity and does not replace OAuth 2.0/OIDC.
         defaultAuthorization: {
           authorizationType: AuthorizationType.API_KEY,
           apiKeyConfig: {
