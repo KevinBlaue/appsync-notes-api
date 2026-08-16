@@ -1,5 +1,14 @@
 import { join } from 'node:path';
-import { AuthorizationType, Definition, FieldLogLevel, GraphqlApi } from 'aws-cdk-lib/aws-appsync';
+import {
+  AppsyncFunction,
+  AuthorizationType,
+  Code as AppsyncCode,
+  Definition,
+  FieldLogLevel,
+  FunctionRuntime,
+  GraphqlApi,
+  Resolver,
+} from 'aws-cdk-lib/aws-appsync';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import {
   ApplicationLogLevel,
@@ -14,7 +23,7 @@ import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import {
   Canary,
   Cleanup,
-  Code,
+  Code as SyntheticsCode,
   Runtime as SyntheticsRuntime,
   Schedule,
   Test,
@@ -100,9 +109,24 @@ export class GraphqlStack extends BaseStack {
       typeName: 'Query',
       fieldName: 'note',
     });
-    dataSource.createResolver('CreateNoteMutationResolver', {
+
+    const createNoteFunction = new AppsyncFunction(this, 'CreateNoteFunction', {
+      api,
+      name: 'createNote',
+      dataSource,
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: AppsyncCode.fromAsset(
+        join(__dirname, '..', '..', 'src', 'resolvers', 'create-note', 'dist', 'index.js'),
+        { deployTime: true }
+      ),
+    });
+    new Resolver(this, 'CreateNoteMutationResolver', {
+      api,
       typeName: 'Mutation',
       fieldName: 'createNote',
+      runtime: FunctionRuntime.JS_1_0_0,
+      code: this.pipelineResolverCode,
+      pipelineConfig: [createNoteFunction],
     });
 
     if (this.booleanValue('canaryEnabled')) {
@@ -111,7 +135,7 @@ export class GraphqlStack extends BaseStack {
       new Canary(this, 'NotesCanary', {
         canaryName: `${this.environmentName}-appsync-notes`,
         test: Test.custom({
-          code: Code.fromAsset(join(__dirname, '..', '..', 'canary', 'dist')),
+          code: SyntheticsCode.fromAsset(join(__dirname, '..', '..', 'canary', 'dist')),
           handler: 'canary/index.handler',
         }),
         runtime: SyntheticsRuntime.SYNTHETICS_NODEJS_PUPPETEER_11_0,
@@ -126,6 +150,18 @@ export class GraphqlStack extends BaseStack {
     }
 
     new CfnOutput(this, 'GraphqlUrl', { value: api.graphqlUrl });
+  }
+
+  private get pipelineResolverCode(): AppsyncCode {
+    return AppsyncCode.fromInline(`
+      export function request() {
+        return {};
+      }
+
+      export function response(ctx) {
+        return ctx.result;
+      }
+    `);
   }
 
   private applicationLogLevel(): ApplicationLogLevel {

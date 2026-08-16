@@ -6,7 +6,8 @@
   "workspaces": [
     "canary",
     "cdk",
-    "src/lambda-functions/*"
+    "src/lambda-functions/*",
+    "src/resolvers/*"
   ],
   "engines": {
     "node": ">=24"
@@ -23,9 +24,10 @@
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "lint": "eslint contract .eslintrc.cjs jest.config.cjs --ext .ts,.cjs --no-error-on-unmatched-pattern && turbo run lint",
+    "resolver:build": "turbo run build --filter=@work-probes/appsync-notes-create-note-resolver",
     "synth": "turbo run synth --filter=@work-probes/appsync-notes-cdk",
     "test": "turbo run test",
-    "test:coverage": "npm run canary:build && jest --coverage --runInBand",
+    "test:coverage": "npm run canary:build && npm run resolver:build && jest --coverage --runInBand",
     "test:update": "turbo run test:update"
   },
   "devDependencies": {

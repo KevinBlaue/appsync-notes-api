@@ -1,0 +1,15 @@
+{
+  "name": "@work-probes/appsync-notes-create-note-resolver",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.cjs",
+    "lint": "eslint . --ext .ts,.cjs",
+    "test": "jest --config jest.config.cjs --runInBand",
+    "test:update": "jest --config jest.config.cjs --runInBand --updateSnapshot"
+  },
+  "devDependencies": {
+    "@aws-appsync/utils": "2.1.1",
+    "esbuild": "0.25.11"
+  }
+}

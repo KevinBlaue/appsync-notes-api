@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@work-probes/appsync-notes-canary": "0.1.0",
+    "@work-probes/appsync-notes-create-note-resolver": "0.1.0",
     "@work-probes/appsync-notes-resolver": "0.1.0",
     "@types/js-yaml": "4.0.9",
     "aws-cdk": "2.1136.0",

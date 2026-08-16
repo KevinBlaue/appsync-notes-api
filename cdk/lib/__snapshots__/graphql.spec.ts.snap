@@ -508,25 +508,6 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         "NotesApiSchema3A74EC4F"
       ]
     },
-    "NotesApiCreateNoteMutationResolver3D106904": {
-      "Type": "AWS::AppSync::Resolver",
-      "Properties": {
-        "ApiId": {
-          "Fn::GetAtt": [
-            "NotesApi2FFCBC92",
-            "ApiId"
-          ]
-        },
-        "DataSourceName": "NotesDataSource",
-        "FieldName": "createNote",
-        "Kind": "UNIT",
-        "TypeName": "Mutation"
-      },
-      "DependsOn": [
-        "NotesApiNotesDataSourceA5D6A438",
-        "NotesApiSchema3A74EC4F"
-      ]
-    },
     "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -638,6 +619,61 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
       "DependsOn": [
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+      ]
+    },
+    "CreateNoteFunctionC1EC69E3": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "CodeS3Location": "s3://cdk-hnb659fds-assets-111111111111-eu-central-1/[ASSET_HASH].js",
+        "DataSourceName": "NotesDataSource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "createNote",
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        }
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "CreateNoteMutationResolverBB9DD792": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Code": "\\n      export function request() {\\n        return {};\\n      }\\n\\n      export function response(ctx) {\\n        return ctx.result;\\n      }\\n    ",
+        "FieldName": "createNote",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "CreateNoteFunctionC1EC69E3",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        },
+        "TypeName": "Mutation"
+      },
+      "DependsOn": [
+        "NotesApiSchema3A74EC4F"
       ]
     }
   },
@@ -1196,25 +1232,6 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         "NotesApiSchema3A74EC4F"
       ]
     },
-    "NotesApiCreateNoteMutationResolver3D106904": {
-      "Type": "AWS::AppSync::Resolver",
-      "Properties": {
-        "ApiId": {
-          "Fn::GetAtt": [
-            "NotesApi2FFCBC92",
-            "ApiId"
-          ]
-        },
-        "DataSourceName": "NotesDataSource",
-        "FieldName": "createNote",
-        "Kind": "UNIT",
-        "TypeName": "Mutation"
-      },
-      "DependsOn": [
-        "NotesApiNotesDataSourceA5D6A438",
-        "NotesApiSchema3A74EC4F"
-      ]
-    },
     "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -1326,6 +1343,61 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
       "DependsOn": [
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+      ]
+    },
+    "CreateNoteFunctionC1EC69E3": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "CodeS3Location": "s3://cdk-hnb659fds-assets-111111111111-eu-central-1/[ASSET_HASH].js",
+        "DataSourceName": "NotesDataSource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "createNote",
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        }
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "CreateNoteMutationResolverBB9DD792": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Code": "\\n      export function request() {\\n        return {};\\n      }\\n\\n      export function response(ctx) {\\n        return ctx.result;\\n      }\\n    ",
+        "FieldName": "createNote",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "CreateNoteFunctionC1EC69E3",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        },
+        "TypeName": "Mutation"
+      },
+      "DependsOn": [
+        "NotesApiSchema3A74EC4F"
       ]
     }
   },

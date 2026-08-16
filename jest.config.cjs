@@ -8,6 +8,7 @@ module.exports = {
   collectCoverageFrom: [
     'cdk/lib/**/*.ts',
     'src/lambda-functions/**/*.ts',
+    'src/resolvers/**/*.ts',
     '!cdk/bin/**',
     '!**/*.d.ts',
     '!**/*.spec.ts',
