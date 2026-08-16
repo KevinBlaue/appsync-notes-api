@@ -1,0 +1,1377 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] = `
+{
+  "Resources": {
+    "Notes5BB3582F": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "DeletionProtectionEnabled": false,
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": false
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ResolverLogs261F0ADB": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/dev-graphql-notes-resolver",
+        "RetentionInDays": 7,
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "NotesResolverServiceRoleDD90BDD2": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesResolverServiceRoleDefaultPolicyC9C11588": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Notes5BB3582F",
+                    "Arn"
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Notes5BB3582F",
+                    "Arn"
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "NotesResolverServiceRoleDefaultPolicyC9C11588",
+        "Roles": [
+          {
+            "Ref": "NotesResolverServiceRoleDD90BDD2"
+          }
+        ]
+      }
+    },
+    "NotesResolver12C1EE8A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Architectures": [
+          "arm64"
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-eu-central-1",
+          "S3Key": "[ASSET_HASH].zip"
+        },
+        "Environment": {
+          "Variables": {
+            "NOTES_TABLE_NAME": {
+              "Ref": "Notes5BB3582F"
+            }
+          }
+        },
+        "FunctionName": "dev-graphql-notes-resolver",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "DEBUG",
+          "LogFormat": "JSON",
+          "LogGroup": {
+            "Ref": "ResolverLogs261F0ADB"
+          },
+          "SystemLogLevel": "WARN"
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "NotesResolverServiceRoleDD90BDD2",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs24.x",
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ],
+        "Timeout": 10,
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "NotesResolverServiceRoleDefaultPolicyC9C11588",
+        "NotesResolverServiceRoleDD90BDD2"
+      ]
+    },
+    "NotesApiApiLogsRole339FF118": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesApi2FFCBC92": {
+      "Type": "AWS::AppSync::GraphQLApi",
+      "Properties": {
+        "AuthenticationType": "API_KEY",
+        "LogConfig": {
+          "CloudWatchLogsRoleArn": {
+            "Fn::GetAtt": [
+              "NotesApiApiLogsRole339FF118",
+              "Arn"
+            ]
+          },
+          "ExcludeVerboseContent": true,
+          "FieldLogLevel": "ERROR"
+        },
+        "Name": "dev-graphql",
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ],
+        "XrayEnabled": true
+      }
+    },
+    "NotesApiSchema3A74EC4F": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Definition": "type Note {\\n  id: ID!\\n  title: String!\\n  content: String\\n  createdAt: AWSDateTime!\\n}\\n\\ninput CreateNoteInput {\\n  title: String!\\n  content: String\\n}\\n\\ntype Query {\\n  note(id: ID!): Note\\n}\\n\\ntype Mutation {\\n  createNote(input: CreateNoteInput!): Note!\\n}\\n\\nschema {\\n  query: Query\\n  mutation: Mutation\\n}\\n"
+      }
+    },
+    "NotesApiDefaultApiKey8CDD7E27": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Description": "Short-lived key for this non-production working probe",
+        "Expires": "[EXPIRATION]"
+      },
+      "DependsOn": [
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "NotesApiLogRetentionAF891257": {
+      "Type": "Custom::LogRetention",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn"
+          ]
+        },
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/appsync/apis/",
+              {
+                "Fn::GetAtt": [
+                  "NotesApi2FFCBC92",
+                  "ApiId"
+                ]
+              }
+            ]
+          ]
+        },
+        "RetentionInDays": 7
+      }
+    },
+    "NotesApiNotesDataSourceServiceRole773EA900": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesApiNotesDataSourceServiceRoleDefaultPolicy598E9B8C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "NotesResolver12C1EE8A",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "NotesResolver12C1EE8A",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "NotesApiNotesDataSourceServiceRoleDefaultPolicy598E9B8C",
+        "Roles": [
+          {
+            "Ref": "NotesApiNotesDataSourceServiceRole773EA900"
+          }
+        ]
+      }
+    },
+    "NotesApiNotesDataSourceA5D6A438": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "LambdaConfig": {
+          "LambdaFunctionArn": {
+            "Fn::GetAtt": [
+              "NotesResolver12C1EE8A",
+              "Arn"
+            ]
+          }
+        },
+        "Name": "NotesDataSource",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "NotesApiNotesDataSourceServiceRole773EA900",
+            "Arn"
+          ]
+        },
+        "Type": "AWS_LAMBDA"
+      }
+    },
+    "NotesApiNoteQueryResolverEB486878": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NotesDataSource",
+        "FieldName": "note",
+        "Kind": "UNIT",
+        "TypeName": "Query"
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "NotesApiCreateNoteMutationResolver3D106904": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NotesDataSource",
+        "FieldName": "createNote",
+        "Kind": "UNIT",
+        "TypeName": "Mutation"
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": [
+          {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ]
+      }
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Runtime": "nodejs24.x",
+        "Timeout": 900,
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-eu-central-1",
+          "S3Key": "[ASSET_HASH].zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn"
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "dev"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "ephemeral"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "DependsOn": [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+      ]
+    }
+  },
+  "Outputs": {
+    "GraphqlUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NotesApi2FFCBC92",
+          "GraphQLUrl"
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}
+`;
+
+exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`] = `
+{
+  "Resources": {
+    "Notes5BB3582F": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "DeletionProtectionEnabled": true,
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "ResolverLogs261F0ADB": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/prod-graphql-notes-resolver",
+        "RetentionInDays": 30,
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "NotesResolverServiceRoleDD90BDD2": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesResolverServiceRoleDefaultPolicyC9C11588": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Notes5BB3582F",
+                    "Arn"
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Notes5BB3582F",
+                    "Arn"
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "NotesResolverServiceRoleDefaultPolicyC9C11588",
+        "Roles": [
+          {
+            "Ref": "NotesResolverServiceRoleDD90BDD2"
+          }
+        ]
+      }
+    },
+    "NotesResolver12C1EE8A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Architectures": [
+          "arm64"
+        ],
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-eu-central-1",
+          "S3Key": "[ASSET_HASH].zip"
+        },
+        "Environment": {
+          "Variables": {
+            "NOTES_TABLE_NAME": {
+              "Ref": "Notes5BB3582F"
+            }
+          }
+        },
+        "FunctionName": "prod-graphql-notes-resolver",
+        "Handler": "index.handler",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "INFO",
+          "LogFormat": "JSON",
+          "LogGroup": {
+            "Ref": "ResolverLogs261F0ADB"
+          },
+          "SystemLogLevel": "WARN"
+        },
+        "MemorySize": 256,
+        "Role": {
+          "Fn::GetAtt": [
+            "NotesResolverServiceRoleDD90BDD2",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs24.x",
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ],
+        "Timeout": 10,
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "DependsOn": [
+        "NotesResolverServiceRoleDefaultPolicyC9C11588",
+        "NotesResolverServiceRoleDD90BDD2"
+      ]
+    },
+    "NotesApiApiLogsRole339FF118": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesApi2FFCBC92": {
+      "Type": "AWS::AppSync::GraphQLApi",
+      "Properties": {
+        "AuthenticationType": "API_KEY",
+        "LogConfig": {
+          "CloudWatchLogsRoleArn": {
+            "Fn::GetAtt": [
+              "NotesApiApiLogsRole339FF118",
+              "Arn"
+            ]
+          },
+          "ExcludeVerboseContent": true,
+          "FieldLogLevel": "ERROR"
+        },
+        "Name": "prod-graphql",
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ],
+        "XrayEnabled": true
+      }
+    },
+    "NotesApiSchema3A74EC4F": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Definition": "type Note {\\n  id: ID!\\n  title: String!\\n  content: String\\n  createdAt: AWSDateTime!\\n}\\n\\ninput CreateNoteInput {\\n  title: String!\\n  content: String\\n}\\n\\ntype Query {\\n  note(id: ID!): Note\\n}\\n\\ntype Mutation {\\n  createNote(input: CreateNoteInput!): Note!\\n}\\n\\nschema {\\n  query: Query\\n  mutation: Mutation\\n}\\n"
+      }
+    },
+    "NotesApiDefaultApiKey8CDD7E27": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "Description": "Short-lived key for this non-production working probe",
+        "Expires": "[EXPIRATION]"
+      },
+      "DependsOn": [
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "NotesApiLogRetentionAF891257": {
+      "Type": "Custom::LogRetention",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn"
+          ]
+        },
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/appsync/apis/",
+              {
+                "Fn::GetAtt": [
+                  "NotesApi2FFCBC92",
+                  "ApiId"
+                ]
+              }
+            ]
+          ]
+        },
+        "RetentionInDays": 30
+      }
+    },
+    "NotesApiNotesDataSourceServiceRole773EA900": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "NotesApiNotesDataSourceServiceRoleDefaultPolicy598E9B8C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "NotesResolver12C1EE8A",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "NotesResolver12C1EE8A",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "NotesApiNotesDataSourceServiceRoleDefaultPolicy598E9B8C",
+        "Roles": [
+          {
+            "Ref": "NotesApiNotesDataSourceServiceRole773EA900"
+          }
+        ]
+      }
+    },
+    "NotesApiNotesDataSourceA5D6A438": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "LambdaConfig": {
+          "LambdaFunctionArn": {
+            "Fn::GetAtt": [
+              "NotesResolver12C1EE8A",
+              "Arn"
+            ]
+          }
+        },
+        "Name": "NotesDataSource",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "NotesApiNotesDataSourceServiceRole773EA900",
+            "Arn"
+          ]
+        },
+        "Type": "AWS_LAMBDA"
+      }
+    },
+    "NotesApiNoteQueryResolverEB486878": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NotesDataSource",
+        "FieldName": "note",
+        "Kind": "UNIT",
+        "TypeName": "Query"
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "NotesApiCreateNoteMutationResolver3D106904": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "NotesApi2FFCBC92",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NotesDataSource",
+        "FieldName": "createNote",
+        "Kind": "UNIT",
+        "TypeName": "Mutation"
+      },
+      "DependsOn": [
+        "NotesApiNotesDataSourceA5D6A438",
+        "NotesApiSchema3A74EC4F"
+      ]
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      }
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": [
+          {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ]
+      }
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Runtime": "nodejs24.x",
+        "Timeout": 900,
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-111111111111-eu-central-1",
+          "S3Key": "[ASSET_HASH].zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn"
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "environment",
+            "Value": "prod"
+          },
+          {
+            "Key": "lifecycle",
+            "Value": "persistent"
+          },
+          {
+            "Key": "managed-by",
+            "Value": "aws-cdk"
+          },
+          {
+            "Key": "project",
+            "Value": "appsync-notes-api"
+          }
+        ]
+      },
+      "DependsOn": [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+      ]
+    }
+  },
+  "Outputs": {
+    "GraphqlUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NotesApi2FFCBC92",
+          "GraphQLUrl"
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}
+`;

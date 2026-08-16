@@ -1,0 +1,5 @@
+defaultRegion: eu-central-1
+projectName: appsync-notes-api
+resourceTags:
+  project: appsync-notes-api
+  managed-by: aws-cdk

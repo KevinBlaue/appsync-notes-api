@@ -1,0 +1,18 @@
+{
+  "name": "@work-probes/appsync-notes-resolver",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.cjs",
+    "lint": "eslint . --ext .ts,.cjs",
+    "test": "jest --config jest.config.cjs --runInBand",
+    "test:update": "jest --config jest.config.cjs --runInBand --updateSnapshot"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1111.0",
+    "@aws-sdk/lib-dynamodb": "3.1111.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.11"
+  }
+}
