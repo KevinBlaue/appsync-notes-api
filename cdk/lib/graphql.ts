@@ -9,7 +9,7 @@ import {
   GraphqlApi,
   Resolver,
 } from 'aws-cdk-lib/aws-appsync';
-import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import type { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import {
   ApplicationLogLevel,
   Architecture,
@@ -33,21 +33,15 @@ import { BaseStack } from './constructs/baseStack';
 import type { StackProps } from './constructs/baseStack';
 import type { App } from './constructs/app';
 
+export interface GraphqlStackProps extends StackProps {
+  readonly notesTable: ITable;
+}
+
 export class GraphqlStack extends BaseStack {
-  constructor(app: App, id: string, props?: StackProps) {
+  constructor(app: App, id: string, props: GraphqlStackProps) {
     super(app, id, props);
 
     const removalPolicy = this.removalPolicy();
-    const notes = new Table(this, 'Notes', {
-      partitionKey: { name: 'id', type: AttributeType.STRING },
-      billingMode: BillingMode.PAY_PER_REQUEST,
-      deletionProtection: this.booleanValue('deletionProtection'),
-      pointInTimeRecoverySpecification: {
-        pointInTimeRecoveryEnabled: this.booleanValue('pointInTimeRecovery'),
-      },
-      removalPolicy,
-    });
-
     const resolverLogGroup = new LogGroup(this, 'ResolverLogs', {
       logGroupName: `/aws/lambda/${Stack.of(this).stackName}-notes-resolver`,
       retention: this.logRetention(),
@@ -80,9 +74,9 @@ export class GraphqlStack extends BaseStack {
         sourceMap: true,
         target: 'node24',
       },
-      environment: { NOTES_TABLE_NAME: notes.tableName },
+      environment: { NOTES_TABLE_NAME: props.notesTable.tableName },
     });
-    notes.grantReadWriteData(resolver);
+    props.notesTable.grantReadWriteData(resolver);
 
     const api = new GraphqlApi(this, 'NotesApi', {
       name: Stack.of(this).stackName,

@@ -1,5 +1,7 @@
 defaultRegion: eu-central-1
+iamGitHubEnabled: false
 projectName: appsync-notes-api
 resourceTags:
   project: appsync-notes-api
   managed-by: aws-cdk
+  data-classification: synthetic

@@ -8,9 +8,22 @@ describe('App', () => {
     expect(app.resourceTags).toEqual({
       project: 'appsync-notes-api',
       'managed-by': 'aws-cdk',
+      'data-classification': 'synthetic',
       lifecycle: 'ephemeral',
     });
+    expect(app.iamGitHubEnabled).toBe(true);
     expect(Tags.of(app)).toBeDefined();
+  });
+
+  test('uses defaults for a dynamic pull-request environment', () => {
+    const app = new App({ context: { environment: 'pr-123' } });
+    expect(app.environmentName).toBe('pr-123');
+    expect(app.iamGitHubEnabled).toBe(false);
+    expect(app.resourceTags).toEqual({
+      project: 'appsync-notes-api',
+      'managed-by': 'aws-cdk',
+      'data-classification': 'synthetic',
+    });
   });
 
   test('validates the environment context', () => {

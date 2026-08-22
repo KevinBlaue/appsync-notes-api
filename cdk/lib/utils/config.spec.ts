@@ -11,9 +11,15 @@ describe('environment configuration', () => {
     });
     expect(loadEnvironmentConfiguration(directory, 'prod', 'graphql')).toMatchObject({
       apiKeyExpiresDays: 90,
-      deletionProtection: true,
-      pointInTimeRecovery: true,
       removalPolicy: 'retain',
+    });
+  });
+
+  test('uses defaults when a dynamic environment has no override directory', () => {
+    const directory = join(__dirname, '..', '..', 'environments');
+    expect(loadEnvironmentConfiguration(directory, 'pr-123', 'database')).toMatchObject({
+      removalPolicy: 'destroy',
+      seedDemoData: true,
     });
   });
 

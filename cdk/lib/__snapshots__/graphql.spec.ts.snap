@@ -3,54 +3,16 @@
 exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] = `
 {
   "Resources": {
-    "Notes5BB3582F": {
-      "Type": "AWS::DynamoDB::Table",
-      "Properties": {
-        "AttributeDefinitions": [
-          {
-            "AttributeName": "id",
-            "AttributeType": "S"
-          }
-        ],
-        "BillingMode": "PAY_PER_REQUEST",
-        "DeletionProtectionEnabled": false,
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
-        "PointInTimeRecoverySpecification": {
-          "PointInTimeRecoveryEnabled": false
-        },
-        "Tags": [
-          {
-            "Key": "environment",
-            "Value": "dev"
-          },
-          {
-            "Key": "lifecycle",
-            "Value": "ephemeral"
-          },
-          {
-            "Key": "managed-by",
-            "Value": "aws-cdk"
-          },
-          {
-            "Key": "project",
-            "Value": "appsync-notes-api"
-          }
-        ]
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
     "ResolverLogs261F0ADB": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/dev-graphql-notes-resolver",
         "RetentionInDays": 7,
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "dev"
@@ -103,6 +65,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "dev"
           },
@@ -150,10 +116,7 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
               "Effect": "Allow",
               "Resource": [
                 {
-                  "Fn::GetAtt": [
-                    "Notes5BB3582F",
-                    "Arn"
-                  ]
+                  "Fn::ImportValue": "dev-database:ExportsOutputFnGetAttNotes5BB3582FArnA2B257F5"
                 }
               ]
             },
@@ -165,10 +128,7 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
               "Effect": "Allow",
               "Resource": [
                 {
-                  "Fn::GetAtt": [
-                    "Notes5BB3582F",
-                    "Arn"
-                  ]
+                  "Fn::ImportValue": "dev-database:ExportsOutputFnGetAttNotes5BB3582FArnA2B257F5"
                 }
               ]
             }
@@ -196,7 +156,7 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         "Environment": {
           "Variables": {
             "NOTES_TABLE_NAME": {
-              "Ref": "Notes5BB3582F"
+              "Fn::ImportValue": "dev-database:ExportsOutputRefNotes5BB3582F1F75E9B0"
             }
           }
         },
@@ -219,6 +179,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         },
         "Runtime": "nodejs24.x",
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "dev"
@@ -277,6 +241,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "dev"
           },
@@ -311,6 +279,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         },
         "Name": "dev-graphql",
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "dev"
@@ -401,6 +373,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
           "Version": "2012-10-17"
         },
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "dev"
@@ -539,6 +515,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "dev"
           },
@@ -598,6 +578,10 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
           ]
         },
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "dev"
@@ -727,54 +711,16 @@ exports[`GraphqlStack synthesizes the dev AppSync API with Lambda resolvers 1`] 
 exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`] = `
 {
   "Resources": {
-    "Notes5BB3582F": {
-      "Type": "AWS::DynamoDB::Table",
-      "Properties": {
-        "AttributeDefinitions": [
-          {
-            "AttributeName": "id",
-            "AttributeType": "S"
-          }
-        ],
-        "BillingMode": "PAY_PER_REQUEST",
-        "DeletionProtectionEnabled": true,
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
-        "PointInTimeRecoverySpecification": {
-          "PointInTimeRecoveryEnabled": true
-        },
-        "Tags": [
-          {
-            "Key": "environment",
-            "Value": "prod"
-          },
-          {
-            "Key": "lifecycle",
-            "Value": "persistent"
-          },
-          {
-            "Key": "managed-by",
-            "Value": "aws-cdk"
-          },
-          {
-            "Key": "project",
-            "Value": "appsync-notes-api"
-          }
-        ]
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
-    },
     "ResolverLogs261F0ADB": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/prod-graphql-notes-resolver",
         "RetentionInDays": 30,
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "prod"
@@ -827,6 +773,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "prod"
           },
@@ -874,10 +824,7 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
               "Effect": "Allow",
               "Resource": [
                 {
-                  "Fn::GetAtt": [
-                    "Notes5BB3582F",
-                    "Arn"
-                  ]
+                  "Fn::ImportValue": "prod-database:ExportsOutputFnGetAttNotes5BB3582FArnA2B257F5"
                 }
               ]
             },
@@ -889,10 +836,7 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
               "Effect": "Allow",
               "Resource": [
                 {
-                  "Fn::GetAtt": [
-                    "Notes5BB3582F",
-                    "Arn"
-                  ]
+                  "Fn::ImportValue": "prod-database:ExportsOutputFnGetAttNotes5BB3582FArnA2B257F5"
                 }
               ]
             }
@@ -920,7 +864,7 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         "Environment": {
           "Variables": {
             "NOTES_TABLE_NAME": {
-              "Ref": "Notes5BB3582F"
+              "Fn::ImportValue": "prod-database:ExportsOutputRefNotes5BB3582F1F75E9B0"
             }
           }
         },
@@ -943,6 +887,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         },
         "Runtime": "nodejs24.x",
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "prod"
@@ -1001,6 +949,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "prod"
           },
@@ -1035,6 +987,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         },
         "Name": "prod-graphql",
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "prod"
@@ -1125,6 +1081,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
           "Version": "2012-10-17"
         },
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "prod"
@@ -1263,6 +1223,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
         ],
         "Tags": [
           {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
+          {
             "Key": "environment",
             "Value": "prod"
           },
@@ -1322,6 +1286,10 @@ exports[`GraphqlStack synthesizes the prod AppSync API with Lambda resolvers 1`]
           ]
         },
         "Tags": [
+          {
+            "Key": "data-classification",
+            "Value": "synthetic"
+          },
           {
             "Key": "environment",
             "Value": "prod"
