@@ -1,9 +1,7 @@
 apiKeyExpiresDays: 30
 applicationLogLevel: INFO
 canaryEnabled: false
-deletionProtection: false
 fieldLogLevel: ERROR
 logRetentionDays: 7
 minify: false
-pointInTimeRecovery: false
 removalPolicy: destroy

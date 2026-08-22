@@ -1,8 +1,6 @@
 apiKeyExpiresDays: 90
 applicationLogLevel: INFO
-deletionProtection: true
 fieldLogLevel: ERROR
 logRetentionDays: 30
 minify: true
-pointInTimeRecovery: true
 removalPolicy: retain
